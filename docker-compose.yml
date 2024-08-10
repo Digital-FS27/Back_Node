@@ -1,11 +1,27 @@
 version: '3.8'
 
 services:
-  front-react:
-    image: node:latest
+  back-express:
+    image: node:18-alpine
     working_dir: /app
     volumes:
       - .:/app
     ports:
       - "3001:3001"
     command: sh -c "npm run dev"
+
+  db:
+    image: mariadb:latest
+    restart: always
+    container_name: prisma-mariadb
+    ports:
+      - '3306:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - mariadb_data:/var/lib/mysql
+volumes:
+  mariadb_data:
