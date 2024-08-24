@@ -2,8 +2,9 @@
   "name": "back_node",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "dev": "npm install && nodemon --legacy-watch --watch"
+    "dev": "npm install && prisma generate && nodemon --legacy-watch --watch"
   },
   "author": "",
   "license": "ISC",

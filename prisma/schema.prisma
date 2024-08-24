@@ -1,28 +1,12 @@
 generator client {
   provider = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
 }
 
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
-
-// model User {
-//   id    Int     @id @default(autoincrement())
-//   email String  @unique
-//   name  String?
-//   posts Post[]
-// }
-
-// model Post {
-//   id        Int     @id @default(autoincrement())
-//   title     String
-//   content   String?
-//   published Boolean @default(false)
-//   author    User?   @relation(fields: [authorId], references: [id])
-//   authorId  Int?
-// }
-
 model Product {
   id          Int     @id @default(autoincrement())
   title       String  @unique
@@ -32,7 +16,8 @@ model Product {
   description String?
   category    String
   image       String
-  rating      Json
+  rate_count  Int
+  rate_value  Float
 
   @@map("products")
 }
