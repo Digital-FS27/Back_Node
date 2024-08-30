@@ -47,6 +47,22 @@ class ProductsController {
             return
         }
     }
+
+    static async deleteProducts (req, res) {
+        let id = req.params.id
+
+        try {
+            const products = await prismaClient.product.delete({
+                where: { id: parseInt(id) },
+              });
+            console.log(req.params)
+            res.status(204).json({status: 204, message: "Deleted", content: products});
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({status: 500, message: "Internal Server Error", content: "Algo inesperado aconteceu no servidor."});
+            return
+        }
+    }
 }
 
 export default ProductsController
