@@ -7,7 +7,7 @@ services:
     volumes:
       - .:/app
     ports:
-      - "3001:3001"
+      - "${PORT}:${PORT}"
     command: sh -c "npm run dev"
 
   db:
@@ -15,7 +15,7 @@ services:
     restart: always
     container_name: prisma-mariadb
     ports:
-      - '3306:3306'
+      - '${MYSQL_PORT}:${MYSQL_PORT}'
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
