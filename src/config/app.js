@@ -6,8 +6,7 @@ const app = express();
 
 const corsOptions = {
     origin: '*',
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    methods: ['GET', 'POST', 'PUT', 'DELETE']
 }
 
 app.use(express.json(), cors(corsOptions), productsRouter);
