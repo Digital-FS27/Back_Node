@@ -60,10 +60,17 @@ Saia do terminal do MariaDB:
 ```
 exit
 ```
+
+## Passo 5: Acesse o container que está rodando o Node.Js
+Após assegurar que o banco está rodando e acessível, use os comando abaixo:
+```
+docker exec -it <nome do container> /bin/sh (Linux)
+docker exec -it <nome do container> sh (Windows)
+```
+
 ## Passo 5: Rode os comandos do Prisma
 Após assegurar que o banco está rodando e acessível, use os comando abaixo:
 
 ```
-npx prisma generate
 npx prisma migrate dev --name init
 ```
