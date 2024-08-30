@@ -1,4 +1,5 @@
 import prismaClient from "../database/prismaClient.js";
+
 class ProductsController {
 
     static async getAllProducts (req, res) {
@@ -47,6 +48,36 @@ class ProductsController {
             return
         }
     }
+
+    static async editAProduct (req, res) {
+
+        const id = req.params.id
+        const  { title, price, discount, inventory, description, category, image, rate_count, rate_value } = req.body;
+
+        if (!title && !price && !inventory && !category && !image && !rate_count && !rate_value) {
+            res.status(400).json({status: 400, message: "Bad Request", content: "É necessário passar algum parâmetro para fazer essa requisição."});
+            return
+        }
+        
+        try {
+
+            const teste = await prismaClient.product.update({
+                where : {
+                    id : parseInt(id)
+                },
+                data : {
+                    ...req.body
+                }
+            });
+
+            res.status(200).json({status: 200, message : "Produto editado!", data : { changed : {...req.body}, new_product : teste}});
+
+        } catch (error) {
+            console.log(error);
+            return
+        }
+    }
+
 }
 
 export default ProductsController
