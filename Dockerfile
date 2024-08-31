@@ -1,17 +1,26 @@
-FROM node:18-alpine3.19
+# Use a imagem oficial do Node.js
+FROM node:18-alpine
 
-RUN npm install -g npm@8.12.2
+# Define o diretório de trabalho
+WORKDIR /app
 
-WORKDIR /usr/app
+# Copia o package.json e package-lock.json
+COPY package*.json ./
 
-COPY package.json ./
-
-COPY prisma ./prisma/
-
+# Instala as dependências
 RUN npm install
 
+# Copia o restante do código
 COPY . .
 
-EXPOSE 5000
+# Gera o cliente Prisma
+RUN npx prisma generate
 
-CMD [ "npm", "run", "dev" ]
+# Roda as migrações do Prisma
+RUN npx prisma migrate deploy
+
+# Expõe a porta que o servidor vai usar
+EXPOSE 3000
+
+# Comando para iniciar a aplicação
+CMD ["npm", "start"]
