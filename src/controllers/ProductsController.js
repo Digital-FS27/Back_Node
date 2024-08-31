@@ -5,10 +5,11 @@ class ProductsController {
     static async getAllProducts (req, res) {
         try {
             const products = await prismaClient.product.findMany();
-            res.status(200).json({status:200, message: "OK", content: products})
+            res.status(200).json({status:200, message: "OK", content: products});
+            return
         } catch (error) {
             console.log(error);
-            res.status(500).json({status: 500, message: "Internal Server Error", content: "Algo inesperado aconteceu no servidor."});
+            res.status(500).json({status: 500, message: "Internal Server Error", content: "Algo inesperado aconteceu no servidor.", data : { traceback : error}});
             return
         }
     }
@@ -41,10 +42,11 @@ class ProductsController {
             })
 
             res.status(201).json({status: 201, message: "Created", content: newProduct});
+            return
 
         } catch (error) {
             console.log(error);
-            res.status(500).json({status: 500, message: "Internal Server Error", content: "Algo inesperado aconteceu no servidor."});
+            res.status(500).json({status: 500, message: "Internal Server Error", content: "Algo inesperado aconteceu no servidor.", data : { traceback : error}});
             return
         }
     }
@@ -56,16 +58,17 @@ class ProductsController {
             const products = await prismaClient.product.delete({
                 where: { id: parseInt(id) },
               });
-            console.log(req.params)
+
             res.status(204).json({status: 204, message: "Deleted", content: products});
+            return
         } catch (error) {
             console.log(error);
-            res.status(500).json({status: 500, message: "Internal Server Error", content: "Algo inesperado aconteceu no servidor."});
+            res.status(500).json({status: 500, message: "Internal Server Error", content: "Algo inesperado aconteceu no servidor.", data : { traceback : error}});
             return
         }
     }
 
-    static async editAProduct (req, res) {
+    static async editAProductPatch (req, res) {
 
         const id = req.params.id
         const  { title, price, discount, inventory, description, category, image, rate_count, rate_value } = req.body;
@@ -87,9 +90,50 @@ class ProductsController {
             });
 
             res.status(200).json({status: 200, message : "Produto editado!", data : { changed : {...req.body}, new_product : teste}});
+            return
 
         } catch (error) {
             console.log(error);
+            res.status(500).json({status: 500, message: "Internal Server Error", content: "Algo inesperado aconteceu no servidor.", data : { traceback : error}});
+            return
+        }
+    }
+
+    static async editAProductPut (req, res) {
+
+        const id = req.params.id
+        const  { title, price, discount, inventory, description, category, image, rate_count, rate_value } = req.body;
+
+        if (!title || !price || !inventory || !category || !image || !rate_count || !rate_value) {
+            res.status(400).json({status: 400, message: "Bad Request", content: "É necessário passar todos os parâmetros para fazer a requisição."});
+            return
+        }
+        
+        try {
+
+            const teste = await prismaClient.product.update({
+                where : {
+                    id : parseInt(id)
+                },
+                data : {
+                    title       : title,
+                    price       : price,
+                    discount    : discount ?? 0,
+                    inventory   : inventory,
+                    description : description ?? "",
+                    category    : category,
+                    image       : image,
+                    rate_count  : rate_count,
+                    rate_value  : rate_value
+                }
+            });
+
+            res.status(200).json({status: 200, message : "Produto editado!", data : { edited_product : teste}});
+            return
+
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({status: 500, message: "Internal Server Error", content: "Algo inesperado aconteceu no servidor.", data : { traceback : error}});
             return
         }
     }
