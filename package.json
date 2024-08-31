@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "type": "module",
+  "engines": {"node" : "18"},
   "scripts": {
-    "dev": "npm install && prisma generate && nodemon --legacy-watch --watch"
+    "dev": "npm install && prisma generate && nodemon --legacy-watch --watch",
+    "postinstall": "npx prisma migrate dev --name init"
   },
   "author": "",
   "license": "ISC",
