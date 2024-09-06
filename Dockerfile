@@ -13,12 +13,6 @@ RUN npm install
 # Copia o restante do código
 COPY . .
 
-# Gera o cliente Prisma
-RUN npx prisma generate
-
-# Roda as migrações do Prisma
-RUN npx prisma migrate deploy
-
 # Expõe a porta que o servidor vai usar
 EXPOSE 3000
 
