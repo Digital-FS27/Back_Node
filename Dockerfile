@@ -1,17 +1,20 @@
-FROM node:16.14-alpine
+# Use a imagem oficial do Node.js
+FROM node:18-alpine
 
-RUN npm install -g npm@8.12.2
+# Define o diretório de trabalho
+WORKDIR /app
 
-WORKDIR /usr/app
+# Copia o package.json e package-lock.json
+COPY package*.json ./
 
-COPY package.json ./
-
-COPY prisma ./prisma/
-
+# Instala as dependências
 RUN npm install
 
+# Copia o restante do código
 COPY . .
 
-EXPOSE 5000
+# Expõe a porta que o servidor vai usar
+EXPOSE 3000
 
-CMD [ "npm", "run", "dev" ]
+# Comando para iniciar a aplicação
+CMD ["npm", "start"]
