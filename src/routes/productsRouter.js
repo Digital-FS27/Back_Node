@@ -9,6 +9,4 @@ productsRouter.delete('/products/:id', ProductsController.deleteProducts);
 productsRouter.put('/products/:id', ProductsController.editAProductPut);
 productsRouter.patch('/products/:id', ProductsController.editAProductPatch);
 
-
-
 export default productsRouter
